@@ -1,0 +1,78 @@
+@font-face {
+    font-family: Sora;
+    src: url(../media/fonts/Sora-Medium.ttf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+:root {
+    --Color-bg: #fff;
+    --Color-text: #000;
+    --Color-desc: #464646;
+    --Color-container: #0000000a;
+    --Color-main : #008cff;
+    --Color-main-dark : #0f2d46;
+    --Color-main-light : #cfe8fd;
+
+    --Number-stroke: 0.2px;
+    --Number-header-h: 100px;
+    --Number-nav-h: 54px;
+}
+
+*::selection {
+    background-color: var(--Color-main);
+    color: var(--Color-main-light);
+}
+
+body {
+    background: var(--Color-bg);
+    color: var(--Color-text);
+    font-family: Sora;
+}
+
+header {
+    width: calc(100% - 25px * 2);
+    padding: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+nav {
+    position: relative;
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: left;
+    width: calc(100% - 25px * 2);
+    padding: 10px 25px ;
+    gap: 5px;
+    border-bottom: 1px solid #c9c9c9;
+    margin-bottom: 25px;
+}
+nav a {
+    color: var(--Color-main);
+    padding: calc(25px / 2);
+    flex-shrink: 1;
+    text-align: center;
+}
+nav a:hover {
+    text-decoration: underline;
+    opacity: .8;
+}
+section {
+    padding: 25px;
+}
+footer {
+    width: calc(100% - 25px * 2);
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    padding: 10px 25px;
+    justify-content: center;
+}

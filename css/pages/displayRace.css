@@ -16,6 +16,15 @@ div.div-event-race {
     overflow: hidden;
     position: relative;
     cursor: pointer;
+    border: 1px solid var(--Color-main-dark);
+    box-shadow: -5px -5px 0px -8px var(--Color-main), 5px 5px 0px -8px var(--Color-field);
+    transition: .25s linear;
+    z-index: 0;
+}
+div.div-event-race:hover {
+    box-shadow: -5px -5px 35px -16px var(--Color-main), 5px 5px 35px -16px var(--Color-field);
+    transition: .25s linear;
+    z-index: 1;
 }
 div.div-event-race img {
     position: absolute;

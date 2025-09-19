@@ -1,0 +1,26 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 18px;
+    position: relative;
+    max-width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+form h2 {
+    margin-bottom: 8px;
+}
+form input, form button {
+    padding: 8px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background: var(--Color-container);
+}
+form button:hover {
+    cursor: pointer;
+    background: var(--Color-text);
+    color: var(--Color-bg);
+}

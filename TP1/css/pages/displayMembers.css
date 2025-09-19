@@ -1,0 +1,34 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: transparent;
+    color: var(--Color-text);
+    border: 1px solid var(--Color-text)
+}
+
+table td,table th {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid var(--Color-desc)
+}
+
+table tr:nth-child(odd) {
+    background-color: #6e6e6e0d
+}
+
+table tr:nth-child(2n) {
+    background-color: transparent
+}
+
+table tr:hover {
+    background-color: #0000000a
+}
+
+td .div-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: calc(64px / 10);
+    background: url(../../media/default_avatar.png);
+    background-position: center;
+    background-size: cover;
+}

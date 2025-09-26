@@ -1,0 +1,14 @@
+.div-database-status {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--Color-container);
+}
+.div-database-status span {
+    width: 24px;
+    height: 24px;
+    background: lime;
+    border-radius: 24px;
+}

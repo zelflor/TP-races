@@ -17,12 +17,12 @@ a.div-event-race {
     position: relative;
     cursor: pointer;
     border: 1px solid var(--Color-main-dark);
-    box-shadow: -5px -5px 0px -8px var(--Color-main), 5px 5px 0px -8px var(--Color-field);
+    /* box-shadow: -5px -5px 0px -8px var(--Color-main), 5px 5px 0px -8px var(--Color-field); */
     transition: .25s linear;
     z-index: 0;
 }
 a.div-event-race:hover {
-    box-shadow: -5px -5px 35px -16px var(--Color-main), 5px 5px 35px -16px var(--Color-field);
+    /* box-shadow: -5px -5px 35px -16px var(--Color-main), 5px 5px 35px -16px var(--Color-field); */
     transition: .25s linear;
     z-index: 1;
 }
@@ -37,12 +37,12 @@ a.div-event-race img {
     transform: scale(1);
     pointer-events: none;
     user-select: none;
-    filter: grayscale(50%);
+    filter: grayscale(100%) sepia(100%) hue-rotate(179deg) saturate(246%);
     transition: all .25s cubic-bezier(.47,1.64,.41,.8);
 }
 a.div-event-race:hover img{
     transform: scale(1.2);
-    filter: grayscale(0%);
+     filter: grayscale(00%) sepia(00%) hue-rotate(0deg) saturate(100%);
     transition: all .25s cubic-bezier(.47,1.64,.41,.8);
 }
 a.div-event-race .div-race-info {

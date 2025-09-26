@@ -8,34 +8,29 @@
         <meta name="viewport" content="width=device-width">
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/pages/index.css">
+        <link rel="stylesheet" href="css/pages/Connexion.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
     <body>
-         <?php
+        <?php
 
         include './components/header.php';
-        ?>
-        <?php
-        
-        $conn = mysqli_connect("localhost", "root", "", "users");
-
-        if (!$conn) {
-            die(mysqli_connect_error());
-        }else {
-         ?>
-            <div class="div-database-status">
-                <p>Base de données connectée</p>
-                <span></span>
-            </div>
-         <?php
-        }
-
         ?>
 
 
         <section>
             <!--  -->
+            <form action="">
+                <h2>Ajouter un adhérents a la course "1"</h2>
+                <select name="user" id="user">
+                    <option value="user1">User 1</option>
+                    <option value="user2">User 2</option>
+                    <option value="user3">User 3</option>
+                    <option value="user4">User 4</option>
+                    <option value="user5">User 5</option>
+                </select>
+                <button type="submit">Oui</button>
+            </form>
         </section>
         <footer>
         <p>&copy; 2025 QUEIROZ Florian</p>

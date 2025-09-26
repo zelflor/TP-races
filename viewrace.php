@@ -22,12 +22,20 @@
         <section>
                 <div class="banner-container">
                     <img src="media/montagne.png" alt="">
+                    <h1>Moutagne</h1>
                 </div>
                 <div class="races-info-container">
                     <h2 class="races-name">Course Montagne</h2>
                     <div class="races-btns-container-flex">
-                    <button>Participer</button>
-                    <button class="btn-admin">Supprimer la course</button>
+                    <a href="participerCourse.php">
+                        <button>Participer</button>
+                    </a>
+                    <a href="ajouterAdherent.php">
+                        <button class="btn-admin">Ajouter adhérents manuellement</button>
+                    </a>
+                    <a href="supprimerCourse.php">
+                        <button class="btn-admin">Supprimer la course</button>
+                    </a>
                     </div>
 
                 </div>

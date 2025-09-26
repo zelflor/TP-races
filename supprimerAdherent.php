@@ -8,34 +8,23 @@
         <meta name="viewport" content="width=device-width">
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/pages/index.css">
+        <link rel="stylesheet" href="css/pages/Connexion.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
     <body>
-         <?php
+        <?php
 
         include './components/header.php';
-        ?>
-        <?php
-        
-        $conn = mysqli_connect("localhost", "root", "", "users");
-
-        if (!$conn) {
-            die(mysqli_connect_error());
-        }else {
-         ?>
-            <div class="div-database-status">
-                <p>Base de données connectée</p>
-                <span></span>
-            </div>
-         <?php
-        }
-
         ?>
 
 
         <section>
             <!--  -->
+            <form action="">
+                <h2>Sur de voulois supprimer l'adherent "Prénom + Nom" de la course id "1"?</h2>
+                <input type="hidden" name="id" value="1">
+                <button type="submit">Oui</button>
+            </form>
         </section>
         <footer>
         <p>&copy; 2025 QUEIROZ Florian</p>

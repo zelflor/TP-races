@@ -9,7 +9,7 @@
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/pages/viewRace.css">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
 </head>
     <body>
       <?php
@@ -22,7 +22,7 @@
         <section>
                 <div class="banner-container">
                     <img src="media/montagne.png" alt="">
-                    <h1>Moutagne</h1>
+                    <h1>Montagne</h1>
                 </div>
                 <div class="races-info-container">
                     <h2 class="races-name">Course Montagne</h2>
@@ -44,8 +44,9 @@
         </section>
        
 
-        <footer>
-        <p>&copy; 2025 QUEIROZ Florian</p>
-        </footer>
+         <?php
+
+        include './components/footer.php';
+        ?>
     </body>
 </html>

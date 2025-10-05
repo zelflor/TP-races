@@ -9,26 +9,26 @@
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/pages/Connexion.css">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
 </head>
     <body>
         <?php
 
         include './components/header.php';
         ?>
-
-
-        <section>
+        <div class="div-form-flex-container">
             <!--  -->
             <form action="">
-                <h2>Hello 👋,Prêt a commencer une nouvelle course?</h2>
+                <h2>Hello 👋,De retour pour battre votre <span>record</span> ?</h2>
                 <input type="email" name="email" id="" placeholder="exemple@btsciel.lan">
                 <input type="password" name="password" id="" placeholder="mot de passe">
                 <button type="submit">Se connecter</button>
             </form>
-        </section>
-        <footer>
-        <p>&copy; 2025 QUEIROZ Florian</p>
-        </footer>
+        </div>
+
+         <?php
+
+        include './components/footer.php';
+        ?>
     </body>
 </html>

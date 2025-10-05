@@ -9,7 +9,7 @@
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/pages/displayRace.css">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
 </head>
     <body>
       <?php
@@ -71,8 +71,9 @@
         </section>
          <script src="./js/searchs/searchRaces.js"></script>
 
-        <footer>
-        <p>&copy; 2025 QUEIROZ Florian</p>
-        </footer>
+         <?php
+
+        include './components/footer.php';
+        ?>
     </body>
 </html>

@@ -16,7 +16,7 @@ a.div-event-race {
     overflow: hidden;
     position: relative;
     cursor: pointer;
-    border: 1px solid var(--Color-main-dark);
+    border: 1px solid var(--Color-main-750);
     /* box-shadow: -5px -5px 0px -8px var(--Color-main), 5px 5px 0px -8px var(--Color-field); */
     transition: .25s linear;
     z-index: 0;

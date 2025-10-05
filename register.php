@@ -14,7 +14,7 @@ session_start();
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/pages/Connexion.css">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
 </head>
     <body>
          <?php
@@ -23,20 +23,22 @@ session_start();
         ?>
 
 
+        <div class="div-form-flex-container">
 
-        <section>
-            <!--  -->
+        
             <form action="">
-                <h2>Bienvenue 👋,Prêt a commencer une course?</h2>
+                <h2>Bienvenue 👋,Prêt a commencer une <span>course</span>?</h2>
                 <input type="email" name="email" id="" placeholder="exemple@btsciel.lan">
                 <input type="text" name="prenom" id="" placeholder="Prénom">
                 <input type="date" name="birth" id="" placeholder="Date de naissance">
                 <input type="password" name="password" id="" placeholder="mot de passe">
                 <button type="submit">S'incrire</button>
             </form>
-        </section>
-        <footer>
-        <p>&copy; 2025 QUEIROZ Florian</p>
-        </footer>
+        </div>
+
+         <?php
+
+        include './components/footer.php';
+        ?>
     </body>
 </html>

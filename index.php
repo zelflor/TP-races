@@ -9,36 +9,27 @@
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/pages/index.css">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
+        
 </head>
     <body>
          <?php
 
         include './components/header.php';
         ?>
-        <?php
-        
-        $conn = mysqli_connect("localhost", "root", "", "users");
+     
 
-        if (!$conn) {
-            die(mysqli_connect_error());
-        }else {
-         ?>
-            <div class="div-database-status">
-                <p>Base de données connectée</p>
-                <span></span>
+      <div class="div-welcome-message-pos">
+            <div class="div-flex-messages">
+                <p>Bienvenue</p><p>dans</p><p>votre</p><p>club</p><p>de</p><p class="important">running</p>
             </div>
+        </div> 
+        <!-- <section>
+        
+        </section> -->
          <?php
-        }
 
+        include './components/footer.php';
         ?>
-
-
-        <section>
-            <!--  -->
-        </section>
-        <footer>
-        <p>&copy; 2025 QUEIROZ Florian</p>
-        </footer>
     </body>
 </html>

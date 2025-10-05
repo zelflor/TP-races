@@ -1,8 +1,5 @@
- <header>
-            <h2>Club de Running</h2>
-            <p>Rejoignez le club de running en tant qu'adhérent</p>
-        </header>
-        <nav>
+    
+       <nav>
             <a href="index.php">
                 Accueil
             </a>

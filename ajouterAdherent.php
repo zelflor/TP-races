@@ -9,7 +9,7 @@
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/pages/Connexion.css">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
 </head>
     <body>
         <?php
@@ -32,8 +32,9 @@
                 <button type="submit">Oui</button>
             </form>
         </section>
-        <footer>
-        <p>&copy; 2025 QUEIROZ Florian</p>
-        </footer>
+         <?php
+
+        include './components/footer.php';
+        ?>
     </body>
 </html>

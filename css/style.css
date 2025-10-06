@@ -89,7 +89,8 @@ nav {
     right: 0;
     gap: 25px;
     z-index: 2;
-        flex-wrap: wrap;
+    overflow: hidden;
+    overflow-x: auto;
 }
 nav a {
     color: var(--Color-main);

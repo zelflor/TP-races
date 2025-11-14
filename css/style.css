@@ -174,7 +174,9 @@ section {
     gap: 0;
     border-radius: 25px;
     border: 1px solid var(--Color-stroke);
+    margin-bottom: 25px;
     overflow: hidden;
+    
 }
 .div-input-search input {
     padding: 10px;
@@ -184,6 +186,7 @@ section {
     flex: 1 0 0;
     border-radius: 25px;
     border-top-right-radius: 0px;
+    color: var(--Color-text);
     border-bottom-right-radius: 0px;
 }
 .div-input-search button {

@@ -16,7 +16,11 @@
          <?php
 
         include './components/header.php';
-        ?>
+        include_once './db/variables.php';
+        
+        
+ ?>
+        
      
 
       <div class="div-welcome-message-pos">
@@ -25,7 +29,9 @@
             </div>
         </div> 
         <!-- <section>
+        <?php 
         
+        ?>
         </section> -->
          <?php
 

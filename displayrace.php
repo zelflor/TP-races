@@ -23,40 +23,52 @@
    
         
             <div class="div-race-flex-container">
-              
+
                 <div class="div-races-list">
-                    <a class="div-event-race" href="viewrace.php?id=1">
-                        <img src="media/montagne.png" alt="Montagne">
-                        <p>Chépaou</p>
-                        <div class="div-race-info">
-                            <h4>Course Montagne</h4>
-
-                            <h3>12/09/2025 à <span>9h30</span></h3>
-                            <h5>50km</h5>
-                        </div>
-                    </a>
+                   <?php 
                 
-                    <a class="div-event-race" href="viewrace.php?id=1">
-                        <img src="media/montagne.png" alt="Montagne">
-                        <p>Chépaou</p>
-                        <div class="div-race-info">
-                            <h4>Course Montagne</h4>
+                 include_once './db/variables.php';
+            
+                try {
+                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                            <h3>12/09/2025 à <span>9h30</span></h3>
-                            <h5>50km</h5>
-                        </div>
-                    </a>
-                    <a class="div-event-race" href="viewrace.php?id=1">
-                        <img src="media/montagne.png" alt="Montagne">
-                        <p>Chépaou</p>
-                        <div class="div-race-info">
-                            <h4>Course Montagne</h4>
+                $stmt = $conn->prepare("SELECT * FROM course ORDER BY cou_date DESC LIMIT 100");
+                $stmt->execute();
+                $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if ($resultats) {
+                    foreach ($resultats as $result){
+                        ?>
+                       
+                         <a class="div-event-race" href="viewrace.php?id=<?php echo $result['cou_id']; ?>">
+                            <img src="media/montagne.png" alt="Montagne">
+                            <p><?php echo $result['cou_ville']; ?></p>
+                            <div class="div-race-info">
+                                <h4> <?php echo $result['cou_nom']; ?></h4>
 
-                            <h3>12/09/2025 à <span>9h30</span></h3>
-                            <h5>50km</h5>
-                        </div>
-                    </a>
+                                <h3><?php echo $result['cou_date']; ?> à <span>9h30</span></h3>
+                                <h5> <?php echo $result['cou_distance']; ?>km</h5>
+                            </div>
+                        </a>
+                        <?php
+                    }
+                }else {
+                    $message ="error";
+                }
                 
+                    
+                }
+                catch (PDOException $e) {
+                $message = "Echec de l'affichage :" . $e->getMessage();
+                }
+
+                if (!empty($message)){
+                    echo $message;
+                }
+        
+                ?>
+                
+                   
                 </div>
                 <div class="div-filter-list">
                     <div class="div-input-search">

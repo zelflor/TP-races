@@ -43,15 +43,58 @@
                 </tr>
             </thead>
             <tbody>
+                <?php 
+                
+                 include_once './db/variables.php';
+            
+                try {
+                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $stmt = $conn->prepare("SELECT 
+                    a.adh_licence,
+                    a.adh_nom,
+                    a.adh_prenom,
+                    a.adh_dateNaissance,
+                    a.adh_sexe,
+                    a.adh_mail,
+                    COUNT(i.ins_couId) AS nb_courses
+                FROM adherent a
+                LEFT JOIN inscrire i ON a.adh_licence = i.ins_adhLicence
+                GROUP BY a.adh_licence, a.adh_nom, a.adh_prenom
+");
+                $stmt->execute();
+                $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if ($resultats) {
+                    foreach ($resultats as $result){
+                        ?>
                 <tr>
-                    <td>1</td>
+                    <td><?php echo $result['adh_licence']; ?></td>
                     <td><div class="div-avatar"></div></td>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>M</td>
-                    <td>01/02/2000</td>
-                    <td>johndoe@btsciel.lan</td>
+                    <td><?php echo $result['adh_prenom']; ?></td>
+                    <td><?php echo $result['adh_nom']; ?></td>
+                    <td><?php echo $result['adh_sexe']; ?></td>
+                    <td><?php echo $result['adh_dateNaissance']; ?></td>
+                    <td><?php echo $result['adh_mail']; ?></td>
                 </tr>
+                        <?php
+                    }
+                }else {
+                    $message ="error";
+                }
+                
+                    
+                }
+                catch (PDOException $e) {
+                $message = "Echec de l'affichage :" . $e->getMessage();
+                }
+
+                if (!empty($message)){
+                    echo $message;
+                }
+        
+                ?>
+              
             </tbody>
         </table>
         </section>

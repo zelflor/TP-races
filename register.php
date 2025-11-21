@@ -19,55 +19,50 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
     $birth_user = $_POST['birth'];
     $password_user = $_POST['password'];
 
-    
     if (empty($email_user) || empty($prenom_user) || empty($birth_user) || empty($password_user)){
-    $message = "Les champs ne sont pas optionnel";
-        
-    }else {
+        $message = "Les champs ne sont pas optionnel";
+    } else {
 
-    //     try {
-    //         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    //         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            
-    //             $stmt = $conn->prepare("SELECT * FROM adherent WHERE adh_mail = :email");
-    //             $stmt->bindParam(':email', $email_user);
-    //             $stmt->execute();
-    //             $resultat = $stmt->fetch();
-    //             if ($resultat){
-                    
-    //                 if ($resultat['adh_mail'] == $email_user ){
-    //                     // $hashpassword = password_hash($password_user, PASSWORD_DEFAULT);
-    //                     if (password_verify($password_user, $resultat['adh_password'])) {
-    //                         $message = "Mot de passe correct";
-    //                             $_SESSION['user'] = [
-    //                             'id' => $resultat['adh_licence'],
-    //                             'mail' => $resultat['adh_mail'],
-    //                             'nom' => $resultat['adh_nom'], 
-    //                             'prenom' => $resultat['adh_prenom']
-    //                         ];
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    //                         header('Location: /');
-    //                         exit();
-    //                     }else {
-    //                         $message = "Mot de passe ou identifiant incorrect";
-    //                     }
-    //                 }
-                    
-                        
+            $stmt = $conn->prepare("SELECT adh_mail FROM adherent WHERE adh_mail = :email");
+            $stmt->bindParam(':email', $email_user);
+            $stmt->execute();
+            $resultat = $stmt->fetch();
 
-    //                 // $message = "Connection reussi!";
-    //             }else {
-    //                 $message = "Aucun utilisateur avec cette email existe";
-    //             }
-              
-            
-    //         $conn = null;
-    //     } catch (PDOException $e) {
-    //         $message = "Echec de l'affichage :" . $e->getMessage();
-    //         }
-        
+            if ($resultat){
+                $message = "Cet utilisateur existe déjà";
+            } else {
+
+                $hashed_password = password_hash($password_user, PASSWORD_DEFAULT);
+
+                $stmtregister = $conn->prepare("
+                    INSERT INTO adherent 
+                    (adh_prenom, adh_dateNaissance, adh_mail, adh_password)
+                    VALUES 
+                    (:prenom, :birth, :email, :pass)
+                ");
+
+                $stmtregister->bindParam(':prenom', $prenom_user);
+                $stmtregister->bindParam(':birth', $birth_user);
+                $stmtregister->bindParam(':email', $email_user);
+                $stmtregister->bindParam(':pass', $hashed_password);
+
+                $stmtregister->execute();
+
+                $message = "Compte créé avec succès";
+            }
+
+            $conn = null;
+
+        } catch (PDOException $e) {
+            $message = "Erreur : " . $e->getMessage();
+        }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">

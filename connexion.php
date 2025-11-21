@@ -1,6 +1,7 @@
 <?php 
 session_start();
-
+?>
+<?php
 if (!empty($_SESSION['user'])){
     header('Location: /');
     exit();
@@ -8,35 +9,6 @@ if (!empty($_SESSION['user'])){
 include_once './db/variables.php';
 
 
-//  if (isset($_POST['login']) && isset($_POST['pwd'])) {
-//   $login = $_POST['login'];
-//   $pass_hache = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
-
-//   try {
-//    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-//    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-//    $stmt = $conn->prepare("SELECT uti_pwd FROM utilisateur WHERE uti_login = :login");
-//    $stmt->bindParam(':login', $login);
-//    $stmt->execute();
-//    $resultat = $stmt->fetch();
-//    if (!$resultat) {
-//     $message = "Mauvais identifiant !";
-//    } else {
-//     $isPasswordCorrect = password_verify($_POST['pwd'], $resultat['uti_pwd']);
-//     if (!$isPasswordCorrect) {
-//      $message = "Mauvais mot de passe !";
-//     } else {
-//      $_SESSION['nom'] = $login;
-//      $message = "Connexion effectuée !";
-//      echo '<meta http-equiv="refresh" content="1;url=index.php">';
-//     }
-//    }
-//   } catch (PDOException $e) {
-//    $message = "Echec de l'affichage :" . $e->getMessage();
-//   }
-//   $conn = null;
-//  }
 
 if ($_SERVER['REQUEST_METHOD'] == "POST"){
     $message = '';
@@ -49,16 +21,43 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
         $message = 'Email ou password pas defini';
         
     }else {
-        $password_hash_user = password_hash($password, PASSWORD_DEFAULT);
+
         try {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
-              $stmt = $conn->prepare("SELECT uti_pwd FROM adherent WHERE adh_mail = :email");
+                $stmt = $conn->prepare("SELECT * FROM adherent WHERE adh_mail = :email");
                 $stmt->bindParam(':email', $email_user);
                 $stmt->execute();
                 $resultat = $stmt->fetch();
-            $message = "Connection reussi!";
+                if ($resultat){
+                    
+                    if ($resultat['adh_mail'] == $email_user ){
+                        // $hashpassword = password_hash($password_user, PASSWORD_DEFAULT);
+                        if (password_verify($password_user, $resultat['adh_password'])) {
+                            $message = "Mot de passe correct";
+                                $_SESSION['user'] = [
+                                'id' => $resultat['adh_licence'],
+                                'mail' => $resultat['adh_mail'],
+                                'nom' => $resultat['adh_nom'], 
+                                'prenom' => $resultat['adh_prenom']
+                            ];
+
+                            header('Location: /');
+                            exit();
+                        }else {
+                            $message = "Mot de passe ou identifiant incorrect";
+                        }
+                    }
+                    
+                        
+
+                    // $message = "Connection reussi!";
+                }else {
+                    $message = "Aucun utilisateur avec cette email existe";
+                }
+              
+            
             $conn = null;
         } catch (PDOException $e) {
             $message = "Echec de l'affichage :" . $e->getMessage();

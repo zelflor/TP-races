@@ -2,7 +2,73 @@
 session_start();
 
 ?>
+<?php
+if (!empty($_SESSION['user'])){
+    header('Location: /');
+    exit();
+}
+include_once './db/variables.php';
 
+
+
+if ($_SERVER['REQUEST_METHOD'] == "POST"){
+    $message = '';
+
+    $email_user = $_POST['email'];
+    $prenom_user = $_POST['prenom'];
+    $birth_user = $_POST['birth'];
+    $password_user = $_POST['password'];
+
+    
+    if (empty($email_user) || empty($prenom_user) || empty($birth_user) || empty($password_user)){
+    $message = "Les champs ne sont pas optionnel";
+        
+    }else {
+
+    //     try {
+    //         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    //         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+    //             $stmt = $conn->prepare("SELECT * FROM adherent WHERE adh_mail = :email");
+    //             $stmt->bindParam(':email', $email_user);
+    //             $stmt->execute();
+    //             $resultat = $stmt->fetch();
+    //             if ($resultat){
+                    
+    //                 if ($resultat['adh_mail'] == $email_user ){
+    //                     // $hashpassword = password_hash($password_user, PASSWORD_DEFAULT);
+    //                     if (password_verify($password_user, $resultat['adh_password'])) {
+    //                         $message = "Mot de passe correct";
+    //                             $_SESSION['user'] = [
+    //                             'id' => $resultat['adh_licence'],
+    //                             'mail' => $resultat['adh_mail'],
+    //                             'nom' => $resultat['adh_nom'], 
+    //                             'prenom' => $resultat['adh_prenom']
+    //                         ];
+
+    //                         header('Location: /');
+    //                         exit();
+    //                     }else {
+    //                         $message = "Mot de passe ou identifiant incorrect";
+    //                     }
+    //                 }
+                    
+                        
+
+    //                 // $message = "Connection reussi!";
+    //             }else {
+    //                 $message = "Aucun utilisateur avec cette email existe";
+    //             }
+              
+            
+    //         $conn = null;
+    //     } catch (PDOException $e) {
+    //         $message = "Echec de l'affichage :" . $e->getMessage();
+    //         }
+        
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -25,13 +91,18 @@ session_start();
 
         <div class="div-form-flex-container">
 
-        
-            <form action="">
+
+            <form action="/register.php" method="post">
+                <?php 
+                if (!empty($message)){
+                    echo '<p> ' . $message . '</p>';
+                }
+                ?>
                 <h2>Bienvenue 👋,Prêt a commencer une <span>course</span>?</h2>
-                <input type="email" name="email" id="" placeholder="exemple@btsciel.lan">
-                <input type="text" name="prenom" id="" placeholder="Prénom">
-                <input type="date" name="birth" id="" placeholder="Date de naissance">
-                <input type="password" name="password" id="" placeholder="mot de passe">
+                <input type="email" name="email" id="email" placeholder="exemple@btsciel.lan">
+                <input type="text" name="prenom" id="prenom" placeholder="Prénom">
+                <input type="date" name="birth" id="birth" placeholder="Date de naissance">
+                <input type="password" name="password" id="password" placeholder="mot de passe">
                 <button type="submit">S'incrire</button>
             </form>
         </div>

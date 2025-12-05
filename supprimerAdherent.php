@@ -12,6 +12,7 @@ session_start();
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/pages/Connexion.css">
+        <link rel="stylesheet" href="css/pages/Forms.css">
         <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
 </head>
     <body>

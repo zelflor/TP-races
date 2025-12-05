@@ -1,0 +1,8 @@
+section {
+    position: relative;
+    min-height: 600px;
+    width: 100svw;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}

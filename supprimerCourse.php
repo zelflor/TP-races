@@ -13,6 +13,7 @@ session_start();
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/pages/Connexion.css">
         <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="css/pages/Forms.css">
 </head>
     <body>
         <?php

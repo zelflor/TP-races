@@ -184,7 +184,7 @@ section {
     background: transparent;
     outline: none;
     flex: 1 0 0;
-    border-radius: 25px;
+    border-radius: 0px;
     border-top-right-radius: 0px;
     color: var(--Color-text);
     border-bottom-right-radius: 0px;

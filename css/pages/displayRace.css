@@ -64,3 +64,18 @@
 .div-race-flex-container .div-filter-list input {
     color: var(--Color-text);
 }
+.div-race-flex-container .div-filter-list button.button-add-race {
+    padding: 8px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+    border-radius: 10px;
+    background: var(--Color-container);
+    color: var(--Color-desc);
+    width: calc(100% - 8px * 0);
+}
+.div-race-flex-container .div-filter-list button.button-add-race:hover {
+    cursor: pointer;
+  background: var(--Color-main-800);
+  color: var(--Color-main-100);
+}

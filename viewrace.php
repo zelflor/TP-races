@@ -44,15 +44,26 @@ session_start();
                     <div class="races-info-container">
                         <h2 class="races-name"><?php echo $result['cou_nom']; ?></h2>
                         <div class="races-btns-container-flex">
-                        <a href="participerCourse.php">
+                        <a href="participerCourse.php?course=<?php echo $result['cou_id']; ?>">
                             <button>Participer</button>
                         </a>
-                        <a href="ajouterAdherent.php">
-                            <button class="btn-admin">Ajouter adhérents manuellement</button>
-                        </a>
-                        <a href="supprimerCourse.php">
-                            <button class="btn-admin">Supprimer la course</button>
-                        </a>
+                           <?php
+                            if (!empty($_SESSION['user'])){
+                                if ($_SESSION['user']['admin'] == '1'){
+
+                                
+                                ?>
+                                     <a href="ajouterAdherent.php?course=<?php echo $result['cou_id']; ?>">
+                                        <button class="btn-admin">Ajouter adhérents manuellement</button>
+                                    </a>
+                                    <a href="supprimerCourse.php?course=<?php echo $result['cou_id']; ?>">
+                                        <button class="btn-admin">Supprimer la course</button>
+                                    </a>
+                                <?php
+                                }
+                            }
+                            ?>
+                      
                     </div>
 
                 </div>

@@ -25,8 +25,8 @@ session_start();
         <section>
             <!--  -->
             <form action="">
-                <h2>Sur de voulois supprimer la course id "1"?</h2>
-                <input type="hidden" name="id" value="1">
+                <h2>Sur de voulois supprimer la course <?php echo $result['cou_nom']; ?>?</h2>
+                <input type="hidden" name="id" value="<?php echo $result['cou_id']; ?>">
                 <button type="submit">Oui</button>
             </form>
         </section>

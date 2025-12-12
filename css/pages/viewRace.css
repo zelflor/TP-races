@@ -75,3 +75,7 @@ div.banner-container img {
 .races-info-container button.btn-admin:hover {
     background: #ff9595;
 }
+
+section {
+    margin: 96px 50px;
+}

@@ -40,7 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
                                 'id' => $resultat['adh_licence'],
                                 'mail' => $resultat['adh_mail'],
                                 'nom' => $resultat['adh_nom'], 
-                                'prenom' => $resultat['adh_prenom']
+                                'prenom' => $resultat['adh_prenom'],
+                                'adh_avatar' => $resultat['adh_avatar'],
+                                'admin' => $resultat['admin']
                             ];
 
                             header('Location: /');

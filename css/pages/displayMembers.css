@@ -29,6 +29,6 @@ td .div-avatar {
     height: 64px;
     border-radius: calc(64px / 10);
     background: url(../../media/default_avatar.png);
-    background-position: center;
-    background-size: cover;
+    background-position: center!important;
+    background-size: cover!important;
 }

@@ -1,7 +1,15 @@
 
 <?php 
 session_start();
+
+if (empty($_SESSION['user'] || $_SESSION['user']['admin'] == '1')){
+    header('Location: /');
+    exit();
+}
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,6 +20,7 @@ session_start();
         <meta name="viewport" content="width=device-width">
         <title>Club de course à pied</title>
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/pages/Forms.css">
         <link rel="stylesheet" href="css/pages/Connexion.css">
         <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
 </head>
@@ -27,11 +36,51 @@ session_start();
             <form action="">
                 <h2>Ajouter un adhérents a la course "1"</h2>
                 <select name="user" id="user">
-                    <option value="user1">User 1</option>
-                    <option value="user2">User 2</option>
-                    <option value="user3">User 3</option>
-                    <option value="user4">User 4</option>
-                    <option value="user5">User 5</option>
+                     <?php 
+                
+                 include_once './db/variables.php';
+            
+                try {
+                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $stmt = $conn->prepare("SELECT 
+                    a.adh_licence,
+                    a.adh_nom,
+                    a.adh_prenom,
+                    a.adh_dateNaissance,
+                    a.adh_sexe,
+                    a.adh_mail,
+                    a.adh_avatar,
+                    COUNT(i.ins_couId) AS nb_courses
+                FROM adherent a
+                LEFT JOIN inscrire i ON a.adh_licence = i.ins_adhLicence
+                GROUP BY a.adh_licence, a.adh_nom, a.adh_prenom
+                ");
+                
+                $stmt->execute();
+                $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if ($resultats) {
+                    foreach ($resultats as $result){
+                        ?>
+                <option value="<?php echo $result['adh_licence']; ?>"><?php echo $result['adh_nom']; ?> <?php echo $result['adh_prenom']; ?></option>
+                        <?php
+                    }
+                }else {
+                    $message ="error";
+                }
+                
+                    
+                }
+                catch (PDOException $e) {
+                $message = "Echec de l'affichage :" . $e->getMessage();
+                }
+
+                if (!empty($message)){
+                    echo $message;
+                }
+        
+                ?>
                 </select>
                 <button type="submit">Oui</button>
             </form>

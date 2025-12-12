@@ -2,7 +2,11 @@
 
 <?php 
 session_start();
+
+
+
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -83,9 +87,20 @@ session_start();
                                             <path d="M21.0002 21L16.7002 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg></button>
                                     </div>
+                            <?php
+                            if (!empty($_SESSION['user'])){
+                                if ($_SESSION['user']['admin'] == '1'){
+
+                                
+                                ?>
                                     <a href="/ajouterCourse.php">
-    <button class="button-add-race">Ajouter une course</button>
-</a>
+                                        <button class="button-add-race">Ajouter une course</button>
+                                    </a>
+                                <?php
+                                }
+                            }
+                            ?>
+
                 </div>
 
            </div>

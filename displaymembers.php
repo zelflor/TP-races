@@ -61,6 +61,7 @@ session_start();
                     a.adh_dateNaissance,
                     a.adh_sexe,
                     a.adh_mail,
+                    a.adh_avatar,
                     COUNT(i.ins_couId) AS nb_courses
                 FROM adherent a
                 LEFT JOIN inscrire i ON a.adh_licence = i.ins_adhLicence
@@ -73,7 +74,7 @@ session_start();
                         ?>
                 <tr>
                     <td><?php echo $result['adh_licence']; ?></td>
-                    <td><div class="div-avatar"></div></td>
+                    <td><div class="div-avatar" style="background: url('/uploads/profile_picture/<?php echo $result['adh_avatar']; ?>')"></div></td>
                     <td><?php echo $result['adh_prenom']; ?></td>
                     <td><?php echo $result['adh_nom']; ?></td>
                     <td><?php echo $result['adh_sexe']; ?></td>

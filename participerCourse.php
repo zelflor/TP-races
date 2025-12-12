@@ -1,5 +1,11 @@
 <?php 
 session_start();
+
+
+if (empty($_SESSION['user'])){
+    header('Location: /');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -17,7 +23,7 @@ session_start();
 </head>
     <body>
         <?php
-
+        include_once './db/variables.php';
         include './components/header.php';
         ?>
 
@@ -25,9 +31,41 @@ session_start();
         <section>
             <!--  -->
             <form action="">
-                <img class="img-avatar" src="./media/default_avatar.png" alt="">
+                <img class="img-avatar" src="/uploads/profile_picture/<?php echo $_SESSION['user']['adh_avatar']; ?>" alt="">
                 <hr>
-                <h2>Participer à la course : "Montagne" (1)</h2>
+                <?php
+                
+                $idrace = $_GET['course'];
+                try {
+                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                
+                $stmt = $conn->prepare("SELECT * FROM course WHERE $idrace = cou_id");
+                $stmt->execute();
+                $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if ($resultats) {
+                    foreach ($resultats as $result){
+                        ?>
+                       
+                ?>
+                <h2>Participer à la course : "<?php echo $result['cou_nom']; ?>" (<?php echo $result['cou_id']; ?>)</h2>
+                              <?php
+                    }
+                }else {
+                    $message ="error";
+                }
+                
+                    
+                }
+                catch (PDOException $e) {
+                $message = "Echec de l'affichage :" . $e->getMessage();
+                }
+
+                if (!empty($message)){
+                    echo $message;
+                }
+        
+                ?>
                 <button type="submit">Oui</button>
             </form>
         </section>

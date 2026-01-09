@@ -1,13 +1,13 @@
 <?php
 session_start();
-
+include_once './db/variables.php';
 ?>
 <?php
 if (!empty($_SESSION['user'])){
     header('Location: /');
     exit();
 }
-include_once './db/variables.php';
+
 
 
 

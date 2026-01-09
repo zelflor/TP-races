@@ -6,7 +6,7 @@ if (empty($_SESSION['user'] || $_SESSION['user']['admin'] == '1')){
     header('Location: /');
     exit();
 }
-
+include_once './db/variables.php';
 ?>
 
 
@@ -38,7 +38,7 @@ if (empty($_SESSION['user'] || $_SESSION['user']['admin'] == '1')){
                 <select name="user" id="user">
                      <?php 
                 
-                 include_once './db/variables.php';
+                 
             
                 try {
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

@@ -1,5 +1,7 @@
 <?php 
 session_start();
+
+include_once './db/variables.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,7 +25,7 @@ session_start();
 
     <?php 
                 
-                 include_once './db/variables.php';
+                
                 $idrace = $_GET['id'];
                 try {
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -67,7 +69,87 @@ session_start();
                     </div>
 
                 </div>
-           
+                <br>
+                <h2>Participants</h2>
+                <br>
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Numéro de licence</th>
+            <th>Photo de profile</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Sexe</th>
+            <th>Date de naissance</th>
+            <th>Mail</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        try {
+            $conn = new PDO(
+                "mysql:host=$servername;dbname=$dbname;charset=utf8",
+                $username,
+                $password,
+                [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+            );
+
+            $idrace = $_GET['id'] ?? null;
+
+            if (!$idrace) {
+                throw new Exception("ID de course manquant");
+            }
+
+            $sql = "
+                SELECT 
+                    a.adh_licence,
+                    a.adh_nom,
+                    a.adh_prenom,
+                    a.adh_dateNaissance,
+                    a.adh_sexe,
+                    a.adh_mail,
+                    a.adh_avatar
+                FROM inscrire i
+                INNER JOIN adherent a 
+                    ON a.adh_licence = i.ins_adhLicence
+                WHERE i.ins_couId = :idrace
+            ";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':idrace', $idrace, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($resultats) {
+                foreach ($resultats as $result) {
+                    ?>
+                    <tr>
+                        <td><?= htmlspecialchars($result['adh_licence']) ?></td>
+                        <td>
+                            <div class="div-avatar"
+                                 style="background-image:url('/uploads/profile_picture/<?= htmlspecialchars($result['adh_avatar']) ?>')">
+                            </div>
+                        </td>
+                        <td><?= htmlspecialchars($result['adh_prenom']) ?></td>
+                        <td><?= htmlspecialchars($result['adh_nom']) ?></td>
+                        <td><?= htmlspecialchars($result['adh_sexe']) ?></td>
+                        <td><?= htmlspecialchars($result['adh_dateNaissance']) ?></td>
+                        <td><?= htmlspecialchars($result['adh_mail']) ?></td>
+                    </tr>
+                    <?php
+                }
+            } else {
+                echo "<tr><td colspan='7'>Aucun inscrit pour cette course</td></tr>";
+            }
+
+        } catch (Exception $e) {
+            echo "<tr><td colspan='7'>Erreur : {$e->getMessage()}</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
+
                 
         </section>
                         <?php
@@ -81,6 +163,11 @@ session_start();
                 catch (PDOException $e) {
                 $message = "Echec de l'affichage :" . $e->getMessage();
                 }
+
+
+
+
+
 
                 if (!empty($message)){
                     echo $message;

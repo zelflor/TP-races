@@ -1,5 +1,7 @@
 <?php 
 session_start();
+
+include_once './db/variables.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">

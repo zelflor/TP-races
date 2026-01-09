@@ -1,5 +1,7 @@
 <?php 
 session_start();
+
+include_once './db/variables.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -19,7 +21,7 @@ session_start();
          <?php
 
         include './components/header.php';
-        include_once './db/variables.php';
+        
         
         
  ?>

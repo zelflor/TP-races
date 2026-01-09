@@ -1,5 +1,7 @@
 <?php 
 session_start();
+
+include_once './db/variables.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -48,7 +50,7 @@ session_start();
             <tbody>
                 <?php 
                 
-                 include_once './db/variables.php';
+                
             
                 try {
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

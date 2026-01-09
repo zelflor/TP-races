@@ -6,6 +6,8 @@ if (empty($_SESSION['user'])){
     header('Location: /');
     exit();
 }
+
+include_once './db/variables.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,19 +25,20 @@ if (empty($_SESSION['user'])){
 </head>
     <body>
         <?php
-        include_once './db/variables.php';
         include './components/header.php';
+        
+        $idrace = $_GET['course'];
         ?>
 
 
         <section>
             <!--  -->
-            <form action="">
+            <form action="/participerCourse.php?course=<?php echo $idrace ?>">
                 <img class="img-avatar" src="/uploads/profile_picture/<?php echo $_SESSION['user']['adh_avatar']; ?>" alt="">
                 <hr>
                 <?php
                 
-                $idrace = $_GET['course'];
+                
                 try {
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -47,7 +50,7 @@ if (empty($_SESSION['user'])){
                     foreach ($resultats as $result){
                         ?>
                        
-                ?>
+                
                 <h2>Participer à la course : "<?php echo $result['cou_nom']; ?>" (<?php echo $result['cou_id']; ?>)</h2>
                               <?php
                     }
@@ -66,6 +69,7 @@ if (empty($_SESSION['user'])){
                 }
         
                 ?>
+                <input type="hidden" name="course" value="<?php echo $idrace ?>">
                 <button type="submit">Oui</button>
             </form>
         </section>

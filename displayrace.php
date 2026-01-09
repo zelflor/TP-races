@@ -4,7 +4,7 @@
 session_start();
 
 
-
+include_once './db/variables.php';
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +36,6 @@ session_start();
                 <div class="div-races-list">
                    <?php 
                 
-                 include_once './db/variables.php';
             
                 try {
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

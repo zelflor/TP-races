@@ -32,6 +32,9 @@ include_once './db/variables.php';
 
 
         <section>
+
+    
+        
             <!--  -->
             <form action="">
                 <h2>Ajouter un adhérents a la course "1"</h2>

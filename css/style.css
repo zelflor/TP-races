@@ -242,3 +242,7 @@ td .div-avatar {
     background-position: center!important;
     background-size: cover!important;
 }
+
+p {
+    font-weight: 200;
+}

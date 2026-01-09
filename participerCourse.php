@@ -32,8 +32,47 @@ include_once './db/variables.php';
 
 
         <section>
+            <?php
+            if ($_SERVER['REQUEST_METHOD'] == "POST"){
+                $message = "";
+                if (empty($idrace) || $idrace == ''){
+                    $message = "L'identifiant de la cource manquante";
+                }else {
+                    try {
+
+                        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+                        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                
+                        $stmt = $conn->prepare("SELECT * FROM adherent WHERE adh_mail = :idrace");
+                        $stmt->bindParam(':idrace', $idrace);
+                        $stmt->execute();
+                        $resultat = $stmt->fetch();
+                        if ($resultat){
+                            $message = "!? meow";
+                        }else {
+                            $message = "Aucun utilisateur avec cette email existe";
+                        }
+                        
+            
+                    $conn = null;
+                    } catch (PDOException $e) {
+                    $message = "Echec de l'affichage :" . $e->getMessage();
+                    }
+                }
+       
+
+
+
+                if ($message != ""){
+                    echo '<p>' . $message . '</p>';
+                }
+
+            }else {
+                ?>
+
+
             <!--  -->
-            <form action="/participerCourse.php?course=<?php echo $idrace ?>">
+            <form action="/participerCourse.php?course=<?php echo $idrace ?>" method="post">
                 <img class="img-avatar" src="/uploads/profile_picture/<?php echo $_SESSION['user']['adh_avatar']; ?>" alt="">
                 <hr>
                 <?php
@@ -77,5 +116,9 @@ include_once './db/variables.php';
 
         include './components/footer.php';
         ?>
+
+                        <?php
+            }
+                ?>
     </body>
 </html>

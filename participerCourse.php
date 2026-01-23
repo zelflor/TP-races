@@ -43,7 +43,7 @@ include_once './db/variables.php';
                         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
                         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 
-                        $stmt = $conn->prepare("SELECT * FROM adherent WHERE adh_mail = :idrace");
+                        $stmt = $conn->prepare("SELECT * FROM course WHERE cou_id = :idrace");
                         $stmt->bindParam(':idrace', $idrace);
                         $stmt->execute();
                         $resultat = $stmt->fetch();

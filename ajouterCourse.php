@@ -2,6 +2,55 @@
 session_start();
 
 include_once './db/variables.php';
+
+
+if ($_SERVER['REQUEST_METHOD'] == "POST"){
+    $nom = $_POST['nom'];
+    $ville = $_POST['ville'];
+    echo "<p>la course " . $nom . " dans la ville de  " . $ville . "</p>\n";
+
+    if (isset($_POST['ville']) && isset($_POST['nom'])) {
+        $nom = $_POST['nom'];
+        $ville = $_POST['ville'];
+        $date = $_POST['date'];
+        $distance = $_POST['distance'];
+
+    } 
+    else {
+        echo "<p>Toutes les données doivent être renseignées.</p>\n";
+    }
+    printf("nom = %s<BR>",$nom);
+    printf("ville = %s\n",$ville);
+    printf("date = %s\n",$date);
+    printf("distance = %s\n",$distance);
+
+    try {
+        $conn = new PDO("mysql:host=localhost;dbname=$dbname", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    } catch (PDOException $e) {
+        echo "<p>Echec de connexion :" . $e->getMessage() ."</p>\n";
+    }
+    $conn = null;
+
+    try {
+        $conn = new PDO("mysql:host=localhost;dbname=$dbname", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $conn->prepare("INSERT INTO course (cou_nom, cou_ville, cou_date, cou_distance)
+        VALUES (:nom, :ville, :date, :distance)");
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':ville', $ville);
+        $stmt->bindParam(':date', $date);
+        $stmt->bindParam(':distance', $distance);
+        $stmt->execute();
+        echo "<p>Insertion(s) effectée(s) : " . $stmt->rowCount() . "</p>\n";
+    } catch (PDOException $e) {
+        echo "<p>Echec de l'insertion :" . $e->getMessage() ."</p>\n";
+    }
+    $conn = null;
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -26,8 +75,25 @@ include_once './db/variables.php';
 
         <section>
             <!--  -->
-            <form action="">
+                
+            <form action="/ajouterCourse.php" method="post">
+
                 <h2>Créé une nouvelle course</h2>
+                <label for="nom">Nom:</label>
+                <input name="nom" type="text" placeholder="la meilleur course au monde"><br>
+
+                <label for="ville">Ville:</label>
+                <input type="text" name="ville" placeholder="authon-la-plaine"><br>
+
+                <label for="distance">Distance:</label>
+                <input type="number" name="distance" placeholder="00"><br>
+
+                <label for="date">Date :</label>
+                <input type="date" id="date" name="date"><br>
+                
+                <button type="submit">Ajouter</button>
+                <input type="reset" value="Effacer">
+
             </form>
         </section>
          <?php

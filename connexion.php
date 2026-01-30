@@ -38,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
                             $message = "Mot de passe correct";
                                 $_SESSION['user'] = [
                                 'id' => $resultat['adh_licence'],
+                                'adh_licence' => $resultat['adh_licence'],
                                 'mail' => $resultat['adh_mail'],
                                 'nom' => $resultat['adh_nom'], 
                                 'prenom' => $resultat['adh_prenom'],

@@ -53,7 +53,7 @@ try {
             if (!$course) {
                 $message = "Cette course n'existe pas.";
             } else {
-// si deja incrit
+                // Vérifier si déjà inscrit
                 $stmt = $conn->prepare(
                     "SELECT 1 FROM inscrire 
                      WHERE ins_adhLicence = :licence 
@@ -79,7 +79,7 @@ try {
                         ':course'  => $idrace
                     ]);
 
-                    $message = "Inscription validée 🎉";
+                    $message = "Inscription validée";
                 }
             }
         }

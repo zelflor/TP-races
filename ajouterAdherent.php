@@ -2,13 +2,22 @@
 <?php 
 session_start();
 
+
+$ip_bloquee = '172.16.1.10';
+$ip_visiteur = $_SERVER['REMOTE_ADDR'];
+
+if ($ip_visiteur === $ip_bloquee) {
+    http_response_code(403);
+    die('Accès refusé');
+}
+
+
 if (empty($_SESSION['user'] || $_SESSION['user']['admin'] == '1')){
     header('Location: /');
     exit();
 }
 include_once './db/variables.php';
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">

@@ -85,7 +85,7 @@ if ($ip_visiteur === $ip_bloquee) {
                         ?>
                 <tr>
                     <td><?php echo $result['adh_licence']; ?></td>
-                    <td><div class="div-avatar" style="background: url('/uploads/profile_picture/<?php echo $result['adh_avatar']; ?>')"></div></td>
+                    <td><a href="/profile.php?id=<?php echo $result['adh_licence']; ?>"><div class="div-avatar" style="background: url('/uploads/profile_picture/<?php echo $result['adh_avatar']; ?>')"></div></a></td>
                     <td><?php echo $result['adh_prenom']; ?></td>
                     <td><?php echo $result['adh_nom']; ?></td>
                     <td><?php echo $result['adh_sexe']; ?></td>
@@ -120,3 +120,4 @@ if ($ip_visiteur === $ip_bloquee) {
         ?>
     </body>
 </html>
+

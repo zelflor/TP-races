@@ -73,7 +73,20 @@ try {
                 ]);
 
                 if ($stmt->fetch()) {
-                    $message = "Tu es déjà inscrit(e) à cette course.";
+
+                    $stmt = $conn->prepare(
+                        "DELETE FROM inscrire
+                        WHERE ins_adhLicence = :licence
+                        AND ins_couId = :course"
+                    );
+                    $stmt->execute([
+                        ':licence' => $_SESSION['user']['adh_licence'],
+                        ':course'  => $idrace
+                    ]);
+
+                    $message = "Tu es désinscrit(e) de la course.";
+
+                    
                 } else {
 
                     // Inscription

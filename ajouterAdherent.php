@@ -1,5 +1,4 @@
-
-<?php 
+<?php
 session_start();
 
 
@@ -11,95 +10,89 @@ if ($ip_visiteur === $ip_bloquee) {
     die('Accès refusé');
 }
 
-
-if (empty($_SESSION['user'] || $_SESSION['user']['admin'] == '1')){
+if (empty($_SESSION['user']) || $_SESSION['user']['admin'] != '1') {
     header('Location: /');
     exit();
 }
+
 include_once './db/variables.php';
+
+
+$idrace = isset($_GET['course']) ? (int) $_GET['course'] : null;
+
+if (!$idrace) {
+    die("ID de course manquant dans l'URL (attendu : ?course=X).");
+}
+
+try {
+    $conn = new PDO(
+        "mysql:host=$servername;dbname=$dbname;charset=utf8",
+        $username,
+        $password,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_licence'])) {
+        $licence_cible = $_POST['user_licence'];
+
+        if (!empty($licence_cible)) {
+
+            $check = $conn->prepare("SELECT 1 FROM inscrire WHERE ins_adhLicence = :licence AND ins_couId = :course");
+            $check->execute([':licence' => $licence_cible, ':course' => $idrace]);
+
+            if (!$check->fetch()) {
+                $stmt = $conn->prepare("INSERT INTO inscrire (ins_adhLicence, ins_couId, ins_date) VALUES (:licence, :course, CURDATE())");
+                $stmt->execute([
+                    ':licence' => $licence_cible,
+                    ':course'  => $idrace
+                ]);
+            }
+
+            header("Location: viewrace.php?id=" . $idrace);
+            exit();
+        }
+    }
+
+} catch (PDOException $e) {
+    die("Erreur base de données : " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-        <meta charset="UTF-8">
-        <meta name="keywords" content="Course, Running">
-        <meta name="description" content="Devenez adhérents à des courses à pied">
-        <meta name="author" content="QUEIROZ Florian">
-        <meta name="viewport" content="width=device-width">
-        <title>Club de course à pied</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/pages/Forms.css">
-        <link rel="stylesheet" href="css/pages/Connexion.css">
-        <link rel="shortcut icon" href="../media/favicon.png" type="image/x-icon">
-</head>
-    <body>
-        <?php
-
-        include './components/header.php';
-        ?>
-
-
-        <section>
-
+    <meta charset="UTF-8">
+    <title>Ajouter un adhérent</title>
+    <link rel="stylesheet" href="css/style.css">
     
-        
-            <!--  -->
-            <form action="">
-                <h2>Ajouter un adhérents a la course "1"</h2>
-                <select name="user" id="user">
-                     <?php 
-                
-                 
+        <link rel="stylesheet" href="css/pages/Connexion.css">
+        <link rel="stylesheet" href="css/pages/Forms.css">
+</head>
+<body>
+    <?php include './components/header.php'; ?>
+
+    <section>
+        <form action="ajouterAdherent.php?course=<?php echo $idrace; ?>" method="post">
+            <h2>Inscrire un membre à la course n°<?php echo $idrace; ?></h2>
             
-                try {
-                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            <label for="user">Choisir l'adhérent :</label>
+            <select name="user_licence" id="user" required>
+                <option value="">-- Sélectionner --</option>
+                <?php 
 
-                $stmt = $conn->prepare("SELECT 
-                    a.adh_licence,
-                    a.adh_nom,
-                    a.adh_prenom,
-                    a.adh_dateNaissance,
-                    a.adh_sexe,
-                    a.adh_mail,
-                    a.adh_avatar,
-                    COUNT(i.ins_couId) AS nb_courses
-                FROM adherent a
-                LEFT JOIN inscrire i ON a.adh_licence = i.ins_adhLicence
-                GROUP BY a.adh_licence, a.adh_nom, a.adh_prenom
-                ");
-                
-                $stmt->execute();
-                $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                if ($resultats) {
-                    foreach ($resultats as $result){
-                        ?>
-                <option value="<?php echo $result['adh_licence']; ?>"><?php echo $result['adh_nom']; ?> <?php echo $result['adh_prenom']; ?></option>
-                        <?php
-                    }
-                }else {
-                    $message ="error";
+                $stmtUsers = $conn->query("SELECT adh_licence, adh_nom, adh_prenom FROM adherent ORDER BY adh_nom ASC");
+                while ($u = $stmtUsers->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<option value='{$u['adh_licence']}'>{$u['adh_nom']} {$u['adh_prenom']}</option>";
                 }
-                
-                    
-                }
-                catch (PDOException $e) {
-                $message = "Echec de l'affichage :" . $e->getMessage();
-                }
-
-                if (!empty($message)){
-                    echo $message;
-                }
-        
                 ?>
-                </select>
-                <button type="submit">Oui</button>
-            </form>
-        </section>
-         <?php
+            </select>
+            
+            <button type="submit">Confirmer l'ajout</button>
+            <p><a href="viewrace.php?id=<?php echo $idrace; ?>">Retour sans ajouter</a></p>
+        </form>
+    </section>
 
-        include './components/footer.php';
-        ?>
-    </body>
+    <?php include './components/footer.php'; ?>
+</body>
 </html>

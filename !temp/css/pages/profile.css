@@ -1,0 +1,38 @@
+.div-profile-container-header {
+    width: calc(80%);
+    min-width: 500px;
+    height: 250px;
+    position: relative;
+    margin-top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    margin-bottom: 200px;
+    
+}
+.div-profile-container-header img.profile-picture {
+    position: absolute;
+    left: 25px;
+    bottom: 0;
+    transform: translateY(50%);
+    object-fit: cover;
+    border-radius: 555px;
+    width: 200px;
+    z-index: 2;
+    height: 200px;
+}
+
+.div-profile-container-header img.banner-profile {
+    width: 100%;
+    border-radius: 10px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    position: absolute;
+}
+.div-profile-container-header h2 {
+    position: relative;
+    top: 400px;
+    left: 0;
+}

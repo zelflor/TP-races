@@ -1,37 +1,39 @@
 <?php
 
-class Router {
+require __DIR__ . "/../private/db.php";
 
-    private $routes = [];
-    private $basePath;
+$uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
-    public function __construct($basePath) {
-        $this->basePath = rtrim($basePath, "/") . "/";
-    }
+$uri = rtrim($uri, "/");
+if ($uri === "") {
+    $uri = "/";
+}
 
-    public function get($path, $file) {
-        $this->routes["GET"][$path] = $file;
-    }
+if (str_starts_with($uri, "/api")) {
+    require __DIR__ . "/../private/api.php";
+    exit;
+}
 
-    public function run() {
+switch ($uri) {
 
-        $method = $_SERVER["REQUEST_METHOD"];
-        $uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+    case "/":
+        require __DIR__ . "/../private/templates/home.php";
+        break;
 
-        $uri = rtrim($uri, "/");
-        if ($uri === "") $uri = "/";
-
-        if (isset($this->routes[$method][$uri])) {
-
-            $file = $this->basePath . $this->routes[$method][$uri];
-
-            if (file_exists($file)) {
-                require $file;
-                return;
-            }
-        }
-
+    case "/profile":
+        require __DIR__ . "/../private/templates/profile.php";
+        break;
+    case "/auth":
+        require __DIR__ . "/../private/templates/auth.php";
+        break;
+    case "/events":
+        require __DIR__ . "/../private/templates/events.php";
+        break;
+    case "/create_event":
+        require __DIR__ . "/../private/templates/create_event.php";
+        break;
+    default:
         http_response_code(404);
-        require $this->basePath . "404.php";
-    }
+        require __DIR__ . "/../private/templates/404.php";
+        break;
 }

@@ -175,40 +175,30 @@ switch ($action) {
 
         break;
 
+
     case "set_winner":
-
+        // Admin uniquement
         if(!isset($_SESSION["user"])){
-            echo json_encode(["error" => "not logged in"]);
-            exit;
-        }
-
+            echo json_encode(["error"=>"not logged in"]); exit;
+        }   
+        $userId = $_SESSION["user"];
         $stmt = $pdo->prepare("SELECT admin FROM users WHERE id = ?");
-        $stmt->execute([$_SESSION["user"]]);
+        $stmt->execute([$userId]);
         $user = $stmt->fetch();
-
-        if(!$user["admin"]){
-            echo json_encode(["error" => "only admins can set winner"]);
-            exit;
-        }
-
-        $event_id = $_POST["event_id"] ?? null;
-        $winner_id = $_POST["winner_id"] ?? null;
-
-        if(!$event_id || !$winner_id){
-            echo json_encode(["error" => "event_id and winner_id required"]);
-            exit;
-        }
-
-        $stmt = $pdo->prepare("
-            UPDATE events
-            SET winner = ?, redeemed = 1
-            WHERE id = ?
-        ");
-        $stmt->execute([$winner_id, $event_id]);
-
-        echo json_encode(["success" => true]);
-
+        if(!$user["admin"]){ echo json_encode(["error"=>"not admin"]); exit; }  
+        $eventId = intval($_POST["event_id"] ?? 0);
+        $winnerId = intval($_POST["winner_id"] ?? 0);
+        if(!$eventId || !$winnerId){ echo json_encode(["error"=>"event_id and winner_id required"]); exit; }    
+        // Vérifier que le participant est bien inscrit
+        $stmt = $pdo->prepare("SELECT * FROM participants WHERE event_id = ? AND user_id = ?");
+        $stmt->execute([$eventId, $winnerId]);
+        if(!$stmt->fetch()){ echo json_encode(["error"=>"User is not a participant"]); exit; }  
+        // Mettre à jour le winner
+        $stmt = $pdo->prepare("UPDATE events SET winner = ? WHERE id = ?");
+        $stmt->execute([$winnerId, $eventId]);  
+        echo json_encode(["success"=>true]);
         break;
+
 
   case "redeem_reward":
 
@@ -307,6 +297,51 @@ switch ($action) {
         ]);
 
     break;
+    case "participate":
+        if(!isset($_SESSION["user"])){
+            echo json_encode(["error"=>"not logged in"]); exit;
+        }
+
+        $userId = $_SESSION["user"];
+        $eventId = intval($_POST["event_id"] ?? 0);
+        if(!$eventId){ echo json_encode(["error"=>"event_id required"]); exit; }
+
+        // Vérifier qu'il n'y a pas déjà de winner
+        $stmt = $pdo->prepare("SELECT winner FROM events WHERE id = ?");
+        $stmt->execute([$eventId]);
+        $event = $stmt->fetch();
+        if(!$event) { echo json_encode(["error"=>"Event not found"]); exit; }
+        if(!empty($event["winner"])) { echo json_encode(["error"=>"Winner already set"]); exit; }
+
+        // Ajouter participant si pas déjà présent
+        $stmt = $pdo->prepare("INSERT IGNORE INTO participants (event_id, user_id) VALUES (?, ?)");
+        $stmt->execute([$eventId, $userId]);
+
+        echo json_encode(["success"=>true]);
+        break;
+
+    case "remove_participation":
+        if(!isset($_SESSION["user"])){
+            echo json_encode(["error"=>"not logged in"]); exit;
+        }
+
+        $userId = $_SESSION["user"];
+        $eventId = intval($_POST["event_id"] ?? 0);
+        if(!$eventId){ echo json_encode(["error"=>"event_id required"]); exit; }
+
+        // Vérifier qu'il n'y a pas de winner
+        $stmt = $pdo->prepare("SELECT winner FROM events WHERE id = ?");
+        $stmt->execute([$eventId]);
+        $event = $stmt->fetch();
+        if(!$event) { echo json_encode(["error"=>"Event not found"]); exit; }
+        if(!empty($event["winner"])) { echo json_encode(["error"=>"Winner already set"]); exit; }
+
+        // Supprimer participation
+        $stmt = $pdo->prepare("DELETE FROM participants WHERE event_id = ? AND user_id = ?");
+        $stmt->execute([$eventId, $userId]);
+
+        echo json_encode(["success"=>true]);
+        break;
     default:
 
         echo json_encode([

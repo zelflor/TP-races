@@ -54,3 +54,15 @@ CREATE TABLE IF NOT EXISTS events (
     FOREIGN KEY (winner) REFERENCES users(id) ON DELETE SET NULL
 )
 ");
+
+$pdo->exec("
+CREATE TABLE IF NOT EXISTS participants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    user_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(event_id, user_id),
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
+");

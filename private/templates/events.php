@@ -1,4 +1,4 @@
-<?php require '../private/components/navbar.php'; ?>
+<?php require '../private/components/navbar.php'; ?> 
 <?php
 require '../private/components/render_items.php';
 
@@ -36,29 +36,34 @@ foreach($events as $event):
         height: 300px!important;
         aspect-ratio: 1 / 1;
     }
+    .participants img {
+        width: 30px; height: 30px; border-radius: 50%; margin-right: 5px; vertical-align: middle;
+    }
 </style>
-<div class="event" >
+<div class="event" data-event-id="<?= $event['id'] ?>">
     <h3><?= htmlspecialchars($event['name']) ?></h3>
     <p>Description: <?= htmlspecialchars($event['description'] ?? '-') ?></p>
     <p>Date: <?= htmlspecialchars($event['event_date']) ?></p>
     <p>Créé par: <?= htmlspecialchars($event['created_by_name'] ?? '-') ?></p>
-   <p>Winner: 
-<?php
-if(!empty($event['winner'])){
-    $stmtU = $pdo->prepare("SELECT id, username, avatar FROM users WHERE id = ?");
-    $stmtU->execute([$event['winner']]);
-    $winnerUser = $stmtU->fetch();
-    if($winnerUser){
-        $avatar = !empty($winnerUser['avatar']) ? '<img src="'.htmlspecialchars($winnerUser['avatar']).'" alt="avatar" width="30" style="vertical-align:middle; margin-right:5px;">' : '';
-        echo '<a href="/profile?id='.$winnerUser['id'].'">'.$avatar.htmlspecialchars($winnerUser['username']).'</a>';
+
+    <p>Winner: 
+    <?php
+    if(!empty($event['winner'])){
+        $stmtU = $pdo->prepare("SELECT id, username, avatar FROM users WHERE id = ?");
+        $stmtU->execute([$event['winner']]);
+        $winnerUser = $stmtU->fetch();
+        if($winnerUser){
+            $avatar = !empty($winnerUser['avatar']) ? '<img src="'.htmlspecialchars($winnerUser['avatar']).'" alt="avatar">' : '';
+            echo '<a href="/profile?id='.$winnerUser['id'].'">'.$avatar.htmlspecialchars($winnerUser['username']).'</a>';
+        } else {
+            echo 'Inconnu';
+        }
     } else {
-        echo 'Inconnu';
+        echo '-';
     }
-} else {
-    echo '-';
-}
-?>
-</p>
+    ?>
+    </p>
+
     <p>Reward:</p>
     <?php if(!empty($event['reward'])): ?>
         <?php renderThickImage(
@@ -68,18 +73,46 @@ if(!empty($event['winner'])){
     <?php else: ?>
         -
     <?php endif; ?>
+
     <p>Redeemed: <?= $event['redeemed'] ? 'Oui' : 'Non' ?></p>
 
-    <?php if($isAdmin): ?>
-        <select>
+    <div class="participants">
+        <strong>Participants:</strong>
         <?php
-        $usersStmt = $pdo->query("SELECT id, username FROM users");
-        foreach($usersStmt->fetchAll() as $u):
+        $stmtP = $pdo->prepare("SELECT u.id, u.username, u.avatar FROM participants p JOIN users u ON p.user_id = u.id WHERE p.event_id = ?");
+        $stmtP->execute([$event['id']]);
+        $participants = $stmtP->fetchAll();
+        foreach($participants as $p){
+            $avatar = !empty($p['avatar']) ? '<img src="'.htmlspecialchars($p['avatar']).'" alt="avatar">' : '';
+            echo '<a href="/profile?id='.$p['id'].'">'.$avatar.htmlspecialchars($p['username']).'</a> ';
+        }
         ?>
-            <option value="<?= $u['id'] ?>"><?= htmlspecialchars($u['username']) ?></option>
+    </div>
+
+    <?php if(!$event['winner'] && $userId): ?>
+        <?php
+        $isParticipating = false;
+        foreach($participants as $p){
+            if($p['id'] == $userId){ $isParticipating = true; break; }
+        }
+        ?>
+        <?php if($isParticipating): ?>
+            <button onclick="removeParticipation(<?= $event['id'] ?>)">Se retirer</button>
+        <?php else: ?>
+            <button onclick="participate(<?= $event['id'] ?>)">Participer</button>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if($isAdmin && $participants): ?>
+        <select>
+        <?php foreach($participants as $p): ?>
+            <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['username']) ?></option>
         <?php endforeach; ?>
         </select>
         <button onclick="setWinner(<?= $event['id'] ?>, this.previousElementSibling.value)">Set Winner</button>
+    <?php endif; ?>
+
+    <?php if($isAdmin): ?>
         <button onclick="removeEvent(<?= $event['id'] ?>)">Supprimer Event</button>
     <?php elseif($userId == $event['winner'] && !$event['redeemed']): ?>
         <button onclick="redeemReward(<?= $event['id'] ?>)">Redeem Reward</button>
@@ -110,6 +143,26 @@ function redeemReward(eventId){
         body: new URLSearchParams({event_id:eventId})
     }).then(r=>r.json()).then(r=>{
         alert(r.success ? "Reward redeemed !" : r.error);
+        location.reload();
+    });
+}
+
+function participate(eventId){
+    fetch("/api?action=participate", {
+        method:"POST",
+        body: new URLSearchParams({event_id:eventId})
+    }).then(r=>r.json()).then(r=>{
+        if(!r.success) alert(r.error);
+        location.reload();
+    });
+}
+
+function removeParticipation(eventId){
+    fetch("/api?action=remove_participation", {
+        method:"POST",
+        body: new URLSearchParams({event_id:eventId})
+    }).then(r=>r.json()).then(r=>{
+        if(!r.success) alert(r.error);
         location.reload();
     });
 }

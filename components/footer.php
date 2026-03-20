@@ -2,7 +2,7 @@
   <div class="footer-container">
     <div class="footer-left">
       <p>Fait avec ❤️ par Zelflor <br> 
-      <span class="span-default-zelflor-quote">"Je design pour qu’un jour elle voie."</span></p>
+      <span class="span-default-zelflor-quote">""</span></p>
       <p>© Florian Queiroz 2025. Tous droits réservés.</p>
     </div>
     
